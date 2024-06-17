@@ -24,10 +24,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         func switchToMainScreen() {
-            let mainViewController = TodoListViewController()
-            let navigationController = UINavigationController(rootViewController: mainViewController)
+            let tabBarController = UITabBarController()
             
-            window?.rootViewController = navigationController
+            let calendarVC = TodoListViewController()
+            calendarVC.view.backgroundColor = .white
+            calendarVC.tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(systemName: "calendar"), tag: 0)
+            
+            let allTasksVC = UIViewController()
+            allTasksVC.view.backgroundColor = .white
+            allTasksVC.tabBarItem = UITabBarItem(title: "All Tasks", image: UIImage(systemName: "checkmark.circle"), tag: 1)
+            
+            let myPageVC = UIViewController()
+            myPageVC.view.backgroundColor = .white
+            myPageVC.tabBarItem = UITabBarItem(title: "MyPage", image: UIImage(systemName: "person.circle"), tag: 2)
+            
+            tabBarController.viewControllers = [calendarVC, allTasksVC, myPageVC]
+            
+            window?.rootViewController = tabBarController
             window?.makeKeyAndVisible()
             
             // Optional: 애니메이션 효과를 추가하여 부드러운 전환을 만듭니다.
@@ -40,7 +53,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
-        // This occurs shortly after the scene enters the background, or when its session is discarded.
+        // This occurs shortly after the scene enters the background, or when its session was discarded.
         // Release any resources associated with this scene that can be re-created the next time the scene connects.
         // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
     }
@@ -65,7 +78,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-
-
 }
-
