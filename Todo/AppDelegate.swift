@@ -18,12 +18,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Thread.sleep(forTimeInterval: 2.0)
         FirebaseApp.configure()
         
-        // Firestore 인스턴스 가져오기
-                let db = Firestore.firestore()
-                
-                // Firestore에 데이터 추가하기
-//                addSampleData(to: db)
-        
         return true
     }
     

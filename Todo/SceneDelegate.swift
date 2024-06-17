@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate,UITabBarControllerDelegate {
 
     var window: UIWindow?
 
@@ -25,20 +25,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         func switchToMainScreen() {
             let tabBarController = UITabBarController()
+            tabBarController.delegate = self
             
             let calendarVC = TodoListViewController()
             calendarVC.view.backgroundColor = .white
             calendarVC.tabBarItem = UITabBarItem(title: "Calendar", image: UIImage(systemName: "calendar"), tag: 0)
             
-            let allTasksVC = UIViewController()
-            allTasksVC.view.backgroundColor = .white
-            allTasksVC.tabBarItem = UITabBarItem(title: "All Tasks", image: UIImage(systemName: "checkmark.circle"), tag: 1)
+            let todayVC = TodayViewController()
+            todayVC.view.backgroundColor = .white
+            todayVC.tabBarItem = UITabBarItem(title: "Today", image: UIImage(systemName: "checkmark.circle"), tag: 1)
             
-            let myPageVC = UIViewController()
-            myPageVC.view.backgroundColor = .white
-            myPageVC.tabBarItem = UITabBarItem(title: "MyPage", image: UIImage(systemName: "person.circle"), tag: 2)
-            
-            tabBarController.viewControllers = [calendarVC, allTasksVC, myPageVC]
+            tabBarController.viewControllers = [calendarVC, todayVC]
             
             window?.rootViewController = tabBarController
             window?.makeKeyAndVisible()
@@ -49,6 +46,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                               options: .transitionCrossDissolve,
                               animations: nil,
                               completion: nil)
+        }
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        if let todayVC = viewController as? TodayViewController {
+                    todayVC.fetchTasks()
+                } else if let calendarVC = viewController as? TodoListViewController {
+                    calendarVC.loadEvents(for: calendarVC.selectedDate)
+                }
+            // Add more conditions if needed for other view controllers
         }
 
     func sceneDidDisconnect(_ scene: UIScene) {
