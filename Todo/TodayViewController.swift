@@ -8,7 +8,7 @@ class TodayViewController: UIViewController, UITableViewDataSource, UITableViewD
     
     var incompleteTasks: [TodoItem] = []
     var completedTasks: [TodoItem] = []
-    
+    var dateLabel: UILabel!
     let db = Firestore.firestore()
     
     override func viewDidLoad() {
@@ -22,37 +22,27 @@ class TodayViewController: UIViewController, UITableViewDataSource, UITableViewD
         title = "Today"
         view.backgroundColor = .white
         
+        dateLabel = UILabel()
+        dateLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        dateLabel.textAlignment = .left
+        
         tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
         tableView.register(TodoItemTableViewCell.self, forCellReuseIdentifier: "TodoItemCell")
-        
+        view.addSubview(dateLabel)
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 2),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            dateLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            dateLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
         ])
-        
-        addTaskButton = UIButton(type: .system)
-        addTaskButton.setTitle("+ Add Task", for: .normal)
-        addTaskButton.addTarget(self, action: #selector(addTaskButtonTapped), for: .touchUpInside)
-        
-        view.addSubview(addTaskButton)
-        addTaskButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            addTaskButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            addTaskButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addTaskButton.heightAnchor.constraint(equalToConstant: 44)
-        ])
-    }
-    
-    @objc func addTaskButtonTapped() {
-        let addEditVC = AddEditTodoViewController(selectedDate: Date())
-        addEditVC.modalPresentationStyle = .overFullScreen
-        present(addEditVC, animated: true, completion: nil)
     }
     
     @objc func fetchTasks() {
@@ -60,6 +50,9 @@ class TodayViewController: UIViewController, UITableViewDataSource, UITableViewD
         let calendar = Calendar.current
         let startOfDay = calendar.startOfDay(for: today)
         let endOfDay = calendar.date(byAdding: .day, value: 1, to: startOfDay)!
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM dd, yyyy" // 날짜 형식 설정
+        dateLabel.text = dateFormatter.string(from: today)
         
         db.collection("events")
             .whereField("date", isGreaterThanOrEqualTo: startOfDay)
@@ -132,8 +125,4 @@ class TodayViewController: UIViewController, UITableViewDataSource, UITableViewD
             }
         }
     }
-}
-
-extension Notification.Name {
-    static let didAddTodayTask = Notification.Name("didAddTodayTask")
 }

@@ -228,10 +228,11 @@ class AddEditTodoViewController: UIViewController {
     }
 
     @objc func saveButtonTapped() {
-        guard let title = titleTextField.text, !title.isEmpty,
-              let details = detailsTextField.text, !details.isEmpty else {
-            return
-        }
+        guard let title = titleTextField.text, !title.isEmpty else {
+                return
+            }
+        
+        let details = detailsTextField.text ?? ""
 
         let date: Date
         if dateButton.title(for: .normal) == "Select Date", let existingDate = todoItem?.date {
