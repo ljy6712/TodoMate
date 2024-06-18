@@ -63,5 +63,6 @@
 <img src="https://github.com/ljy6712/TodoMate/assets/116533378/ba1c3bb6-7f80-4d63-8c80-adfc7977b9f0.png" width="200" height="400"/>
 <img src="https://github.com/ljy6712/TodoMate/assets/116533378/f3d42163-0949-4a28-bd37-7a892790d095.png" width="200" height="400"/>
 
-2.4 소개 영상
+### 2.3 소개 영상(아래 이미지를 클릭하면 영상 링크로 이동됩니다.)
+[![Video Label](https://github.com/ljy6712/TodoMate/assets/116533378/4374db7e-c4fe-46d1-9a2d-0c4ead372a6a.png)](https://www.youtube.com/watch?v=L0VgM3Tg4W0)
 
